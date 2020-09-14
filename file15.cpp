@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-#define ENDLF(x) fwrite("\n", sizeof(char), 1, x)
+#define ENDLF(x) fwrite("\n", sizeof(char), 2, x)
 #define MAX_CHILDS 9
 
 
@@ -111,48 +111,48 @@ int main()
 		return 404;
 	}
 	printf("Файл открыт");
+
 	char name[128];
 	char surname[128];
-
-	int age;
 	size_t len;
 	size_t lens;
 	printf("Введите 'closeIt' в имя следующего персонажа, чтобы закрыть программу \n");
 	printf("Введите ваш текст ниже \n");
-	int id = 0;
+	int id = 1;
 	do
 	{
-		id++;
-		printf("Введите имя персонажа \n");
-		std::cin.getline(name, 128);
+		std::cout << "Введите имя персонажа \n";
+		std::cin >> name;
 		if (!strcmp(name, "closeIt"))
 		{
 			printf("Пока");
 			break;
 		}
-		printf("Введите фамилию персонажа \n");
-		std::cin.getline(surname, 128);
-		printf("Введите возраст \n");
+		std::cout << "Введите фамилию персонажа \n";
+		std::cin >> surname;
+		std::cout << "Введите возраст \n";
+		int age;
 		std::cin >> age;
 
 		Construct(id, name, surname, age);
 
-		fwrite("Student ID: ", sizeof(char), 13, pFile);
-		//fwrite((char*)id, sizeof(char), sizeof(id), pFile);
+		fwrite("Student ID:\t", sizeof(char), 13, pFile);
+		fwrite("\n", sizeof(char), 1, pFile);
+		//fwrite((char*)id, sizeof(char), 1, pFile);
 		ENDLF(pFile);
-		fwrite("Name: ", sizeof(char), 7, pFile);
+		fwrite("Name:\t", sizeof(char), 7, pFile);
 		lens = strlen(name);
-		fwrite(name, sizeof(char), sizeof(name), pFile);
+		fwrite(name, sizeof(char), lens, pFile);
 		ENDLF(pFile);
-		fwrite("Surname: ", sizeof(char), 10, pFile);
-
+		fwrite("Surname:\t", sizeof(char), 10, pFile);
 		lens = strlen(surname);
 		fwrite(surname, sizeof(char), lens, pFile);
 		ENDLF(pFile);
-		fwrite("Age: ", sizeof(char), 6, pFile);
+		fwrite("Age:\t", sizeof(char), 6, pFile);
 		//fwrite((char*)age, sizeof(char), sizeof(age), pFile);
 		ENDLF(pFile);
 
+		id++;
 		lens = strlen(name);
 		len = fwrite(name, sizeof(char), lens, pFile);
 		if (len != lens)
@@ -167,7 +167,7 @@ int main()
 	return 0;
 }
 
-int main2()
+int mains()
 {
 	setlocale(LC_ALL, "russian");
 	FILE* pFile;
@@ -197,6 +197,7 @@ int main2()
 	char input[128];
 	printf("Введите 'closeIt' чтобы закрыть программу \n");
 	printf("Введите ваш текст ниже \n");
+
 	do
 	{
 		std::cin.getline(input, 128);
@@ -219,6 +220,7 @@ int main2()
 			break;
 		}
 	} while (1);
+
 	fclose(pFile);
 	return 0;
 }
